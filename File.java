@@ -14,26 +14,22 @@ public class File {
     }
 
     public void readFile() {
-        try (BufferedReader br = new BufferedReader(new FileReader(path + "/" + name))) {
-            String line;
-            System.out.println("Reading File " + name + ":");
-            while ((line = br.readLine()) != null) {
-                System.out.println(line);
-            }
-        } catch (IOException e) {
-            System.err.println("Error reading file: " + e.getMessage());
-        }
+        System.out.println(getCurrentFileContent());
     }
 
     public boolean updateFile(String newContent) {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(path + "/" + name, false))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(path + "/" + name, true))) {
             bw.write(newContent);
-            fileVersions.saveVersion(newContent);
-            return true;
+            bw.newLine();
+            bw.close();
         } catch (IOException e) {
             System.err.println("Error updating file: " + e.getMessage());
             return false;
         }
+        String latestContent = getCurrentFileContent();
+        // System.out.println(latestContent);
+        fileVersions.saveVersion(latestContent);
+        return true;
     }
 
     public void revertToVersion(int versionNumber) {
@@ -54,6 +50,7 @@ public class File {
             while ((line = br.readLine()) != null) {
                 content.append(line).append("\n");
             }
+            br.close();
         } catch (IOException e) {
             System.err.println("Error getting current file content: " + e.getMessage());
         }

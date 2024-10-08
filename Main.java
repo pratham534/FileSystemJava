@@ -85,9 +85,9 @@ public class Main {
             File file = dir.getFile(fileName);
             if (file != null) {
                 int versionCount = file.getVersionCount();
-                System.out.println("Versions for " + fileName + ":");
+                System.out.println("Versions for \'" + fileName + "\':-");
                 for (int i = 1; i <= versionCount; i++) {
-                    System.out.println("Version " + i + ": " + file.getFileVersions().getVersion(i));
+                    System.out.println("Version " + i + ": \n" + file.getFileVersions().getVersion(i));
                 }
             }
         }
@@ -136,7 +136,6 @@ public class Main {
             if (file != null) {
                 System.out.print("Enter new content: ");
                 String content = scanner.nextLine();
-                System.out.println(content);
                 file.updateFile(content);
             }
         }
